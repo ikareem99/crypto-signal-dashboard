@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T13:46:27.980169+00:00",
+  "updated_at": "2026-10-12T13:53:46.739716+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
@@ -27,7 +27,22 @@
       "signal_ts": "2026-10-11T05:00:00+00:00",
       "outcome": "EXPIRED_WIN",
       "pnl_pct": 3.18,
-      "score": 60.0
+      "score": 60.0,
+      "entry": 0.10596,
+      "stop": 0.09925912166347477,
+      "take_profit": 0.11936175667305046,
+      "exit_price": 0.10944,
+      "exit_ts": "2026-10-11T13:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +60 (TREND)",
+        "trend up (+35)",
+        "RSI 63 (+15)",
+        "basis -42bp (+10)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": "2026-10-11 13:22:12"
     },
     {
       "coin": "STRK",
@@ -36,7 +51,21 @@
       "signal_ts": "2026-10-10T20:00:00+00:00",
       "outcome": "WIN",
       "pnl_pct": 9.0,
-      "score": 62.0
+      "score": 62.0,
+      "entry": 0.1016,
+      "stop": 0.0969273647132549,
+      "take_profit": 0.11094527057349018,
+      "exit_price": 0.11094527057349018,
+      "exit_ts": "2026-10-11T01:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +62 (TREND)",
+        "trend up (+35)",
+        "RSI 81 (+25)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": "2026-10-11 02:11:43"
     },
     {
       "coin": "STRK",
@@ -45,7 +74,21 @@
       "signal_ts": "2026-10-10T20:00:00+00:00",
       "outcome": "WIN",
       "pnl_pct": 9.15,
-      "score": 63.0
+      "score": 63.0,
+      "entry": 0.1014,
+      "stop": 0.09671238921403119,
+      "take_profit": 0.11077522157193763,
+      "exit_price": 0.11077522157193763,
+      "exit_ts": "2026-10-11T01:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +63 (TREND)",
+        "trend up (+35)",
+        "RSI 81 (+25)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.4,
+      "horizon_h": 8,
+      "verified_at": "2026-10-11 02:22:14"
     },
     {
       "coin": "NEAR",
@@ -54,7 +97,21 @@
       "signal_ts": "2026-10-10T15:00:00+00:00",
       "outcome": "LOSS",
       "pnl_pct": -1.92,
-      "score": 60.0
+      "score": 60.0,
+      "entry": 5.418,
+      "stop": 5.31950965096938,
+      "take_profit": 5.614980698061241,
+      "exit_price": 5.31950965096938,
+      "exit_ts": "2026-10-10T17:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +60 (TREND)",
+        "trend up (+35)",
+        "RSI 75 (+21)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": "2026-10-10 18:22:24"
     },
     {
       "coin": "NEAR",
@@ -63,7 +120,21 @@
       "signal_ts": "2026-10-10T14:00:00+00:00",
       "outcome": "LOSS",
       "pnl_pct": -2.01,
-      "score": 60.0
+      "score": 60.0,
+      "entry": 5.423,
+      "stop": 5.325108648849165,
+      "take_profit": 5.618782702301671,
+      "exit_price": 5.325108648849165,
+      "exit_ts": "2026-10-10T17:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +60 (TREND)",
+        "trend up (+35)",
+        "RSI 75 (+20)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": "2026-10-10 18:11:42"
     },
     {
       "coin": "AAVE",
@@ -72,7 +143,22 @@
       "signal_ts": "2026-10-10T08:00:00+00:00",
       "outcome": "LOSS",
       "pnl_pct": -1.4,
-      "score": 66.0
+      "score": 66.0,
+      "entry": 174.23,
+      "stop": 171.96779446006326,
+      "take_profit": 178.75441107987345,
+      "exit_price": 171.96779446006326,
+      "exit_ts": "2026-10-10T13:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +66 (TREND)",
+        "trend up (+33)",
+        "RSI 66 (+13)",
+        "funding z=-2.1 contrarian (+17)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.4,
+      "horizon_h": 8,
+      "verified_at": "2026-10-10 14:22:13"
     },
     {
       "coin": "MAGIC",
@@ -81,7 +167,22 @@
       "signal_ts": "2026-10-10T06:00:00+00:00",
       "outcome": "LOSS",
       "pnl_pct": -5.66,
-      "score": 74.0
+      "score": 74.0,
+      "entry": 0.15819,
+      "stop": 0.14939137079540946,
+      "take_profit": 0.17578725840918108,
+      "exit_price": 0.14939137079540946,
+      "exit_ts": "2026-10-10T07:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +74 (TREND)",
+        "trend up (+35)",
+        "RSI 86 (+25)",
+        "basis -21bp (+7)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.5,
+      "horizon_h": 8,
+      "verified_at": "2026-10-10 11:35:25"
     },
     {
       "coin": "MAGIC",
@@ -90,7 +191,21 @@
       "signal_ts": "2026-10-09T20:00:00+00:00",
       "outcome": "WIN",
       "pnl_pct": 9.92,
-      "score": 64.0
+      "score": 64.0,
+      "entry": 0.11681,
+      "stop": 0.11096057869851202,
+      "take_profit": 0.12850884260297596,
+      "exit_price": 0.12850884260297596,
+      "exit_ts": "2026-10-10T01:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +64 (TREND)",
+        "trend up (+35)",
+        "RSI 90 (+25)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.4,
+      "horizon_h": 8,
+      "verified_at": "2026-10-10 04:22:10"
     },
     {
       "coin": "MAGIC",
@@ -99,7 +214,23 @@
       "signal_ts": "2026-10-09T19:00:00+00:00",
       "outcome": "WIN",
       "pnl_pct": 10.1,
-      "score": 73.0
+      "score": 73.0,
+      "entry": 0.11504,
+      "stop": 0.10917446936764262,
+      "take_profit": 0.12677106126471477,
+      "exit_price": 0.12677106126471477,
+      "exit_ts": "2026-10-09T20:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +73 (TREND)",
+        "trend up (+35)",
+        "RSI 90 (+25)",
+        "funding z=-2.4 contrarian (+19)",
+        "at upper band -> fade"
+      ],
+      "regime": "TREND",
+      "confidence": 0.5,
+      "horizon_h": 8,
+      "verified_at": "2026-10-10 03:22:10"
     },
     {
       "coin": "STRK",
@@ -108,7 +239,22 @@
       "signal_ts": "2026-10-09T06:00:00+00:00",
       "outcome": "WIN",
       "pnl_pct": 7.87,
-      "score": 82.0
+      "score": 82.0,
+      "entry": 0.06847,
+      "stop": 0.06574093062839888,
+      "take_profit": 0.07392813874320225,
+      "exit_price": 0.07392813874320225,
+      "exit_ts": "2026-10-09T08:00:00+00:00",
+      "reasons": [
+        "LONG \u25b2 score +82 (TREND)",
+        "trend up (+35)",
+        "RSI 76 (+23)",
+        "funding z=-5.1 contrarian (+20)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.7,
+      "horizon_h": 8,
+      "verified_at": "2026-10-09 14:22:14"
     }
   ]
 }
