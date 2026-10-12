@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto Signal Engine — Live Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+         background: #0f1420; color: #e8ecf4; padding: 24px; line-height: 1.5; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .sub { color: #8b93a7; font-size: 14px; margin-bottom: 8px; }
+  .live { display: inline-block; font-size: 12px; color: #3ddc84; margin-bottom: 20px; }
+  .live::before { content: "● "; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .card { background: #1a2133; border-radius: 10px; padding: 16px; }
+  .card .label { font-size: 12px; color: #8b93a7; text-transform: uppercase; letter-spacing: .5px; }
+  .card .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+  .green { color: #3ddc84; } .red { color: #ff6b6b; }
+  h2 { font-size: 18px; margin: 24px 0 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; color: #8b93a7; font-weight: 600; padding: 8px; border-bottom: 1px solid #2a3350; font-size: 12px; text-transform: uppercase; }
+  td { padding: 10px 8px; border-bottom: 1px solid #1e2538; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+  .badge.perp { background: #2b3a5e; color: #7aa2ff; }
+  .badge.spot { background: #2b5e3f; color: #3ddc84; }
+  .note { margin-top: 28px; padding: 14px 16px; background: #1a2133; border-radius: 10px; font-size: 13px; color: #8b93a7; }
+  .note b { color: #e8ecf4; }
+  .err { background: #3a1f1f; border-radius: 10px; padding: 20px; color: #ff9b9b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📊 Crypto Signal Engine</h1>
+  <div class="sub" id="updated">Loading…</div>
+  <div class="live">LIVE · refreshes every 30 min</div>
+
+  <div id="content"></div>
+
+  <div class="note">
+    <b>About:</b> <span id="engine"></span><br>
+    Backtest: <span id="backtest"></span><br>
+    Paper-trading research system — no real money.
+  </div>
+</div>
+<script>
+async function load() {
+  try {
+    const r = await fetch('data/dashboard-data.json?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    render(d);
+  } catch (e) {
+    document.getElementById('content').innerHTML =
+      '<div class="err">Could not load dashboard data. Retrying…</div>';
+  }
+}
+function venueCards(v, name, cls) {
+  const wr = v.win_rate, pf = v.profit_factor, tr = v.total_return_pct;
+  const c = x => x > 0 ? 'green' : (x < 0 ? 'red' : '');
+  return `<h2><span class="badge ${cls}">${name}</span></h2>
+  <div class="cards">
+    <div class="card"><div class="label">Signals</div><div class="value">${v.signals}</div></div>
+    <div class="card"><div class="label">Win rate</div><div class="value ${wr >= 50 ? 'green' : 'red'}">${wr}%</div></div>
+    <div class="card"><div class="label">Profit factor</div><div class="value ${pf >= 1 ? 'green' : 'red'}">${pf}</div></div>
+    <div class="card"><div class="label">Total return</div><div class="value ${c(tr)}">${tr >= 0 ? '+' : ''}${tr}%</div></div>
+  </div>`;
+}
+function render(d) {
+  const dt = new Date(d.updated_at);
+  document.getElementById('updated').textContent =
+    'Updated ' + dt.toLocaleString('en-GB', { timeZone: 'Asia/Karachi' }) + ' PKT';
+  document.getElementById('engine').textContent = d.engine;
+  document.getElementById('backtest').textContent =
+    'PF ' + d.backtest.profit_factor_2y + ' — ' + d.backtest.note;
+  let html = venueCards(d.perp, 'PERP · Perpetual Futures', 'perp');
+  html += venueCards(d.spot, 'SPOT', 'spot');
+  html += '<h2>Recent signals</h2><table><tr><th>Coin</th><th>Dir</th><th>Venue</th><th>Signal time</th><th>Outcome</th><th>P&L</th><th>Score</th></tr>';
+  for (const s of d.recent) {
+    const pnl = s.pnl_pct == null ? '—' :
+      `<span class="${s.pnl_pct >= 0 ? 'green' : 'red'}">${s.pnl_pct >= 0 ? '+' : ''}${s.pnl_pct}%</span>`;
+    const oc = s.outcome == null ? '<span style="color:#8b93a7">OPEN</span>' :
+      (s.outcome.includes('WIN') ? `<span class="green">${s.outcome}</span>` : `<span class="red">${s.outcome}</span>`);
+    const ts = new Date(s.signal_ts + (s.signal_ts.endsWith('Z') ? '' : 'Z'));
+    html += `<tr><td>${s.coin}</td><td>${s.direction}</td>` +
+      `<td><span class="badge ${s.venue}">${s.venue.toUpperCase()}</span></td>` +
+      `<td>${ts.toLocaleString('en-GB', { timeZone: 'Asia/Karachi' })}</td>` +
+      `<td>${oc}</td><td>${pnl}</td><td>${s.score ?? '—'}</td></tr>`;
+  }
+  document.getElementById('content').innerHTML = html + '</table>';
+}
+load();
+setInterval(load, 5 * 60 * 1000);
+</script>
+</body>
+</html>
