@@ -3,93 +3,320 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Crypto Signal Engine — Live Dashboard</title>
+<title>Signal Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #eef2ee;
+    --surface: #f9fbf8;
+    --card: #ffffff;
+    --ink: #1c2420;
+    --ink-soft: #5b665f;
+    --ink-faint: #8a948d;
+    --line: #dde5dd;
+    --green: #1d7a4f;
+    --green-bg: #e3f2e9;
+    --red: #c0392b;
+    --red-bg: #fbe9e7;
+    --amber: #b7791f;
+    --amber-bg: #fdf3e0;
+    --blue: #2b5fa6;
+    --blue-bg: #e8f0fc;
+    --hero: #141a17;
+    --hero-ink: #f2f5f2;
+    --hero-soft: #a7b3ac;
+    --radius: 26px;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-         background: #0f1420; color: #e8ecf4; padding: 24px; line-height: 1.5; }
-  .wrap { max-width: 960px; margin: 0 auto; }
-  h1 { font-size: 26px; margin-bottom: 4px; }
-  .sub { color: #8b93a7; font-size: 14px; margin-bottom: 8px; }
-  .live { display: inline-block; font-size: 12px; color: #3ddc84; margin-bottom: 20px; }
-  .live::before { content: "● "; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 8px; }
-  .card { background: #1a2133; border-radius: 10px; padding: 16px; }
-  .card .label { font-size: 12px; color: #8b93a7; text-transform: uppercase; letter-spacing: .5px; }
-  .card .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
-  .green { color: #3ddc84; } .red { color: #ff6b6b; }
-  h2 { font-size: 18px; margin: 24px 0 12px; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; color: #8b93a7; font-weight: 600; padding: 8px; border-bottom: 1px solid #2a3350; font-size: 12px; text-transform: uppercase; }
-  td { padding: 10px 8px; border-bottom: 1px solid #1e2538; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-  .badge.perp { background: #2b3a5e; color: #7aa2ff; }
-  .badge.spot { background: #2b5e3f; color: #3ddc84; }
-  .note { margin-top: 28px; padding: 14px 16px; background: #1a2133; border-radius: 10px; font-size: 13px; color: #8b93a7; }
-  .note b { color: #e8ecf4; }
-  .err { background: #3a1f1f; border-radius: 10px; padding: 20px; color: #ff9b9b; }
+  body {
+    font-family: 'Manrope', -apple-system, sans-serif;
+    background: var(--bg); color: var(--ink);
+    padding: 28px 20px 60px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+  .topbar { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
+  .topbar h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
+  .topbar .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* Hero stage */
+  .hero {
+    background: var(--hero); color: var(--hero-ink);
+    border-radius: var(--radius); padding: 34px 32px;
+    margin-bottom: 22px; position: relative; overflow: hidden;
+  }
+  .hero .kick { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; color: var(--hero-soft); text-transform: uppercase; margin-bottom: 14px; }
+  .hero h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .hero p.restraint { color: var(--hero-soft); font-size: 15px; max-width: 560px; }
+  .hero .badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .pill { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 5px 12px; border-radius: 999px; text-transform: uppercase; }
+  .pill.open { background: #1d7a4f; color: #fff; }
+  .pill.idle { background: #2a332e; color: var(--hero-soft); }
+  .pill.perp { background: #22354f; color: #9cc0f5; }
+  .pill.spot { background: #1e4d38; color: #8fe3b4; }
+  .hero .pair { font-family: var(--mono); font-size: 13px; color: var(--hero-soft); margin-bottom: 4px; }
+  .hero .dir-big { font-size: 44px; font-weight: 800; letter-spacing: -1px; margin: 6px 0; }
+  .hero .dir-big.long { color: #4ade80; }
+  .hero .dir-big.short { color: #f87171; }
+  .hero .conf { font-family: var(--mono); font-size: 14px; color: var(--hero-soft); margin-bottom: 18px; }
+  .hero .conf b { color: var(--hero-ink); font-size: 20px; }
+  .rail { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+  .rail .cell { background: #1e2622; border-radius: 14px; padding: 12px 14px; }
+  .rail .k { font-size: 11px; color: var(--hero-soft); text-transform: uppercase; letter-spacing: 1px; font-family: var(--mono); }
+  .rail .v { font-family: var(--mono); font-size: 17px; font-weight: 600; margin-top: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip { background: #232c27; color: #cfe0d4; font-size: 13px; padding: 7px 13px; border-radius: 999px; }
+  .hero .times { font-family: var(--mono); font-size: 12px; color: var(--hero-soft); margin-top: 16px; }
+
+  /* Section titles */
+  h3.section { font-size: 17px; font-weight: 800; margin: 30px 0 14px; letter-spacing: -0.2px; }
+
+  /* Venue panels */
+  .venues { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .venues { grid-template-columns: 1fr; } }
+  .venue { background: var(--card); border-radius: 20px; padding: 22px; border: 1px solid var(--line); }
+  .venue .vhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .venue .vname { font-weight: 800; font-size: 15px; letter-spacing: 0.5px; }
+  .vstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .vstats .s .k { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.6px; }
+  .vstats .s .v { font-size: 22px; font-weight: 800; margin-top: 2px; font-family: var(--mono); }
+  .pos { color: var(--green); } .neg { color: var(--red); }
+
+  /* Filters */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .fbtn { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 999px;
+          border: 1px solid var(--line); background: var(--card); color: var(--ink-soft); cursor: pointer; }
+  .fbtn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .fgroup { display: flex; gap: 8px; align-items: center; margin-right: 12px; }
+  .fgroup .flabel { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--mono); }
+
+  /* Ledger */
+  .ledger { display: flex; flex-direction: column; gap: 10px; }
+  details.sig { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  details.sig summary { list-style: none; cursor: pointer; padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+  details.sig summary::-webkit-details-marker { display: none; }
+  details.sig summary:hover { background: var(--surface); }
+  .dirmark { font-size: 20px; font-weight: 800; width: 28px; text-align: center; }
+  .dirmark.long { color: var(--green); } .dirmark.short { color: var(--red); }
+  .sigmain { flex: 1; min-width: 0; }
+  .sigmain .l1 { font-weight: 700; font-size: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .sigmain .l2 { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+  .obadge { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; letter-spacing: 0.5px; }
+  .obadge.WIN, .obadge.EXPIRED_WIN { background: var(--green-bg); color: var(--green); }
+  .obadge.LOSS, .obadge.EXPIRED_LOSS { background: var(--red-bg); color: var(--red); }
+  .obadge.OPEN { background: var(--amber-bg); color: var(--amber); }
+  .vbadge { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .vbadge.perp { background: var(--blue-bg); color: var(--blue); }
+  .vbadge.spot { background: var(--green-bg); color: var(--green); }
+  .sigpnl { font-family: var(--mono); font-weight: 700; font-size: 15px; }
+  .sigbody { padding: 0 18px 18px 58px; border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 14px; }
+  .kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .kv .k { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--mono); }
+  .kv .v { font-family: var(--mono); font-size: 14px; font-weight: 600; margin-top: 2px; }
+  .reasons { margin-top: 8px; }
+  .reasons li { font-size: 13.5px; color: var(--ink-soft); margin: 4px 0 4px 18px; }
+  .timeline { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 10px; }
+
+  /* Jobs */
+  .jobs { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .jobs .jrow { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .jobs .jrow:last-child { border-bottom: none; }
+  .jobs .jname { font-weight: 600; }
+  .jobs .jmeta { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+
+  footer { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-faint); }
+  .empty { text-align: center; padding: 30px; color: var(--ink-faint); font-size: 14px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>📊 Crypto Signal Engine</h1>
-  <div class="sub" id="updated">Loading…</div>
-  <div class="live">LIVE · refreshes every 30 min</div>
-
-  <div id="content"></div>
-
-  <div class="note">
-    <b>About:</b> <span id="engine"></span><br>
-    Backtest: <span id="backtest"></span><br>
-    Paper-trading research system — no real money.
+  <div class="topbar">
+    <h1>Signal Dashboard</h1>
+    <div class="meta"><span class="live-dot"></span>LIVE · <span id="updated">loading…</span></div>
   </div>
+
+  <div class="hero" id="hero"></div>
+
+  <h3 class="section">Verified performance</h3>
+  <div class="venues" id="venues"></div>
+
+  <h3 class="section">Signal history</h3>
+  <div class="filters">
+    <div class="fgroup"><span class="flabel">Outcome</span>
+      <button class="fbtn active" data-f="outcome" data-v="all">All</button>
+      <button class="fbtn" data-f="outcome" data-v="win">Wins</button>
+      <button class="fbtn" data-f="outcome" data-v="loss">Losses</button>
+      <button class="fbtn" data-f="outcome" data-v="open">Open</button>
+    </div>
+    <div class="fgroup"><span class="flabel">Venue</span>
+      <button class="fbtn active" data-f="venue" data-v="all">All</button>
+      <button class="fbtn" data-f="venue" data-v="perp">Perp</button>
+      <button class="fbtn" data-f="venue" data-v="spot">Spot</button>
+    </div>
+  </div>
+  <div class="ledger" id="ledger"></div>
+
+  <h3 class="section">What the scheduled jobs do</h3>
+  <div class="jobs" id="jobs"></div>
+
+  <footer>
+    Paper-trading research system — no real money. Signals are generated by an automated
+    trend-following engine for research and review, not financial advice.
+    Data refreshes automatically as signals fire and resolve.
+  </footer>
 </div>
+
 <script>
+const PKT = 'Asia/Karachi';
+let DATA = null;
+const filters = { outcome: 'all', venue: 'all' };
+
+const fmtT = iso => {
+  if (!iso) return '—';
+  const d = new Date(iso.endsWith('Z') || iso.includes('+') ? iso : iso + 'Z');
+  return d.toLocaleString('en-GB', { timeZone: PKT, day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+};
+const fmtP = (n, dec=2) => n == null ? '—' : n.toFixed(dec);
+const isWin = o => o === 'WIN' || o === 'EXPIRED_WIN';
+const isLoss = o => o === 'LOSS' || o === 'EXPIRED_LOSS';
+
+function renderHero() {
+  const el = document.getElementById('hero');
+  const open = (DATA.recent || []).find(s => !s.outcome || s.outcome === 'OPEN');
+  if (!open) {
+    el.innerHTML = `
+      <div class="kick">Signal stage</div>
+      <div class="badges"><span class="pill idle">No trade</span></div>
+      <h2>Standing by.</h2>
+      <p class="restraint">The engine is scanning the market. It only fires when the setup clears a high bar — most hours, correctly, nothing happens. Restraint is the strategy working.</p>`;
+    return;
+  }
+  const dirCls = open.direction === 'LONG' ? 'long' : 'short';
+  const arrow = open.direction === 'LONG' ? '▲' : '▼';
+  el.innerHTML = `
+    <div class="kick">Signal stage</div>
+    <div class="badges">
+      <span class="pill open">Open</span>
+      <span class="pill ${open.venue}">${open.venue}</span>
+      ${open.regime ? `<span class="pill idle">${open.regime}</span>` : ''}
+    </div>
+    <div class="pair">${open.coin}/USDT · ${open.direction} ${arrow}</div>
+    <div class="dir-big ${dirCls}">${open.direction}</div>
+    <div class="conf">confidence <b>${open.confidence ?? '—'}%</b> · score ${open.score ?? '—'}</div>
+    <div class="rail">
+      <div class="cell"><div class="k">Entry</div><div class="v">${fmtP(open.entry, 5)}</div></div>
+      <div class="cell"><div class="k">Stop</div><div class="v">${fmtP(open.stop, 5)}</div></div>
+      <div class="cell"><div class="k">Target</div><div class="v">${fmtP(open.take_profit, 5)}</div></div>
+    </div>
+    ${open.reasons && open.reasons.length ? `<div class="chips">${open.reasons.map(r => `<span class="chip">${r}</span>`).join('')}</div>` : ''}
+    <div class="times">opened ${fmtT(open.signal_ts)} PKT</div>`;
+}
+
+function venuePanel(v, name, cls) {
+  const wr = v.win_rate, pf = v.profit_factor, tr = v.total_return_pct;
+  return `<div class="venue">
+    <div class="vhead"><span class="vname">${name}</span><span class="vbadge ${cls}">${cls.toUpperCase()}</span></div>
+    <div class="vstats">
+      <div class="s"><div class="k">Win rate</div><div class="v ${wr >= 50 ? 'pos' : 'neg'}">${wr}%</div></div>
+      <div class="s"><div class="k">Net P&amp;L</div><div class="v ${tr >= 0 ? 'pos' : 'neg'}">${tr >= 0 ? '+' : ''}${tr}%</div></div>
+      <div class="s"><div class="k">Profit factor</div><div class="v ${pf >= 1 ? 'pos' : 'neg'}">${pf}</div></div>
+    </div>
+    <div style="margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink-faint)">${v.signals} resolved · ${v.wins} wins</div>
+  </div>`;
+}
+
+function sigRow(s) {
+  const arrow = s.direction === 'LONG' ? '▲' : '▼';
+  const dirCls = s.direction === 'LONG' ? 'long' : 'short';
+  const oc = s.outcome || 'OPEN';
+  const pnl = s.pnl_pct == null ? '' :
+    `<span class="sigpnl ${s.pnl_pct >= 0 ? 'pos' : 'neg'}">${s.pnl_pct >= 0 ? '+' : ''}${s.pnl_pct}%</span>`;
+  const reasons = (s.reasons && s.reasons.length)
+    ? `<div class="reasons"><ul>${s.reasons.map(r => `<li>${r}</li>`).join('')}</ul></div>` : '';
+  return `<details class="sig">
+    <summary>
+      <span class="dirmark ${dirCls}">${arrow}</span>
+      <span class="sigmain">
+        <span class="l1">${s.coin}/USDT ${s.direction}
+          <span class="vbadge ${s.venue}">${s.venue.toUpperCase()}</span>
+          <span class="obadge ${oc}">${oc.replace('_', ' ')}</span>
+        </span>
+        <span class="l2">${fmtT(s.signal_ts)} PKT · score ${s.score ?? '—'}</span>
+      </span>
+      ${pnl}
+    </summary>
+    <div class="sigbody">
+      <div class="kv">
+        <div><div class="k">Entry</div><div class="v">${fmtP(s.entry, 5)}</div></div>
+        <div><div class="k">Stop</div><div class="v">${fmtP(s.stop, 5)}</div></div>
+        <div><div class="k">Target</div><div class="v">${fmtP(s.take_profit, 5)}</div></div>
+        <div><div class="k">Exit</div><div class="v">${fmtP(s.exit_price, 5)}</div></div>
+        <div><div class="k">Regime</div><div class="v">${s.regime || '—'}</div></div>
+        <div><div class="k">Horizon</div><div class="v">${s.horizon_h ? s.horizon_h + 'h' : '—'}</div></div>
+      </div>
+      ${reasons}
+      <div class="timeline">opened ${fmtT(s.signal_ts)} PKT${s.exit_ts ? ' · resolved ' + fmtT(s.exit_ts) + ' PKT' : ''}${s.verified_at ? ' · verified ' + fmtT(s.verified_at) + ' PKT' : ''}</div>
+    </div>
+  </details>`;
+}
+
+function renderLedger() {
+  const el = document.getElementById('ledger');
+  let rows = DATA.recent || [];
+  if (filters.outcome === 'win') rows = rows.filter(s => isWin(s.outcome));
+  if (filters.outcome === 'loss') rows = rows.filter(s => isLoss(s.outcome));
+  if (filters.outcome === 'open') rows = rows.filter(s => !s.outcome || s.outcome === 'OPEN');
+  if (filters.venue !== 'all') rows = rows.filter(s => s.venue === filters.venue);
+  el.innerHTML = rows.length ? rows.map(sigRow).join('')
+    : '<div class="empty">No signals match these filters.</div>';
+}
+
+function renderJobs() {
+  const jobs = [
+    ['Signal generator', 'every hour · scans 26 coins'],
+    ['Signal verifier', 'every 30 min · resolves outcomes'],
+    ['Spot signal generator', 'every hour · spot venue'],
+    ['Spot verifier', 'every 30 min · spot outcomes'],
+    ['OI poller', 'every 15 min · open-interest intel'],
+  ];
+  document.getElementById('jobs').innerHTML = jobs.map(([n, m]) =>
+    `<div class="jrow"><span class="jname">${n}</span><span class="jmeta">${m}</span></div>`).join('');
+}
+
+function render(d) {
+  DATA = d;
+  document.getElementById('updated').textContent =
+    'updated ' + fmtT(d.updated_at) + ' PKT';
+  renderHero();
+  document.getElementById('venues').innerHTML =
+    venuePanel(d.perp, 'Perpetual Futures', 'perp') + venuePanel(d.spot, 'Spot', 'spot');
+  renderLedger();
+  renderJobs();
+}
+
 async function load() {
   try {
     const r = await fetch('data/dashboard-data.json?t=' + Date.now());
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const d = await r.json();
-    render(d);
+    if (!r.ok) throw 0;
+    render(await r.json());
   } catch (e) {
-    document.getElementById('content').innerHTML =
-      '<div class="err">Could not load dashboard data. Retrying…</div>';
+    document.getElementById('ledger').innerHTML =
+      '<div class="empty">Could not load dashboard data — retrying…</div>';
   }
 }
-function venueCards(v, name, cls) {
-  const wr = v.win_rate, pf = v.profit_factor, tr = v.total_return_pct;
-  const c = x => x > 0 ? 'green' : (x < 0 ? 'red' : '');
-  return `<h2><span class="badge ${cls}">${name}</span></h2>
-  <div class="cards">
-    <div class="card"><div class="label">Signals</div><div class="value">${v.signals}</div></div>
-    <div class="card"><div class="label">Win rate</div><div class="value ${wr >= 50 ? 'green' : 'red'}">${wr}%</div></div>
-    <div class="card"><div class="label">Profit factor</div><div class="value ${pf >= 1 ? 'green' : 'red'}">${pf}</div></div>
-    <div class="card"><div class="label">Total return</div><div class="value ${c(tr)}">${tr >= 0 ? '+' : ''}${tr}%</div></div>
-  </div>`;
-}
-function render(d) {
-  const dt = new Date(d.updated_at);
-  document.getElementById('updated').textContent =
-    'Updated ' + dt.toLocaleString('en-GB', { timeZone: 'Asia/Karachi' }) + ' PKT';
-  document.getElementById('engine').textContent = d.engine;
-  document.getElementById('backtest').textContent =
-    'PF ' + d.backtest.profit_factor_2y + ' — ' + d.backtest.note;
-  let html = venueCards(d.perp, 'PERP · Perpetual Futures', 'perp');
-  html += venueCards(d.spot, 'SPOT', 'spot');
-  html += '<h2>Recent signals</h2><table><tr><th>Coin</th><th>Dir</th><th>Venue</th><th>Signal time</th><th>Outcome</th><th>P&L</th><th>Score</th></tr>';
-  for (const s of d.recent) {
-    const pnl = s.pnl_pct == null ? '—' :
-      `<span class="${s.pnl_pct >= 0 ? 'green' : 'red'}">${s.pnl_pct >= 0 ? '+' : ''}${s.pnl_pct}%</span>`;
-    const oc = s.outcome == null ? '<span style="color:#8b93a7">OPEN</span>' :
-      (s.outcome.includes('WIN') ? `<span class="green">${s.outcome}</span>` : `<span class="red">${s.outcome}</span>`);
-    const ts = new Date(s.signal_ts + (s.signal_ts.endsWith('Z') ? '' : 'Z'));
-    html += `<tr><td>${s.coin}</td><td>${s.direction}</td>` +
-      `<td><span class="badge ${s.venue}">${s.venue.toUpperCase()}</span></td>` +
-      `<td>${ts.toLocaleString('en-GB', { timeZone: 'Asia/Karachi' })}</td>` +
-      `<td>${oc}</td><td>${pnl}</td><td>${s.score ?? '—'}</td></tr>`;
-  }
-  document.getElementById('content').innerHTML = html + '</table>';
-}
+
+document.querySelectorAll('.fbtn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll(`.fbtn[data-f="${b.dataset.f}"]`).forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  filters[b.dataset.f] = b.dataset.v;
+  renderLedger();
+}));
+
 load();
 setInterval(load, 5 * 60 * 1000);
 </script>
