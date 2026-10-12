@@ -3,173 +3,305 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>Signal Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* Ported verbatim from private signal-dashboard client/src/theme.css
+   (tailwind imports and @theme block dropped; everything else kept) */
+:root {
+  --bg: #eef2ee;
+  --surface: #f9fbf8;
+  --surface-strong: #ffffff;
+  --text: #101512;
+  --dim: #627067;
+  --border: #ccd5ce;
+  --accent: #147a4d;
+  --good: #087c4a;
+  --good-soft: #dff4e8;
+  --bad: #c8483d;
+  --bad-soft: #fae6e2;
+  --warn: #a66a00;
+  --ink-stage: #101512;
+  --stage-text: #f2f7f3;
+  --radius: 14px;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg: #eef2ee;
-    --surface: #f9fbf8;
-    --card: #ffffff;
-    --ink: #1c2420;
-    --ink-soft: #5b665f;
-    --ink-faint: #8a948d;
-    --line: #dde5dd;
-    --green: #1d7a4f;
-    --green-bg: #e3f2e9;
-    --red: #c0392b;
-    --red-bg: #fbe9e7;
-    --amber: #b7791f;
-    --amber-bg: #fdf3e0;
-    --blue: #2b5fa6;
-    --blue-bg: #e8f0fc;
-    --hero: #141a17;
-    --hero-ink: #f2f5f2;
-    --hero-soft: #a7b3ac;
-    --radius: 26px;
-    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --bg: #0b0e0d;
+    --surface: #121714;
+    --surface-strong: #171d19;
+    --text: #e8eee9;
+    --dim: #89958d;
+    --border: #2a342e;
+    --accent: #36d487;
+    --good: #4be09a;
+    --good-soft: #133727;
+    --bad: #ff766a;
+    --bad-soft: #3c201e;
+    --warn: #f2b84b;
+    --ink-stage: #151b18;
+    --stage-text: #eff6f1;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Manrope', -apple-system, sans-serif;
-    background: var(--bg); color: var(--ink);
-    padding: 28px 20px 60px; line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 1020px; margin: 0 auto; }
-  .topbar { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
-  .topbar h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
-  .topbar .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
-  .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Manrope, "Avenir Next", "Segoe UI", sans-serif;
+  background: var(--bg); color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+.mono {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+main {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding: 14px 16px 44px;
+}
+@media (min-width: 760px) {
+  main { padding: 26px 28px 64px; }
+}
 
-  /* Hero stage */
-  .hero {
-    background: var(--hero); color: var(--hero-ink);
-    border-radius: var(--radius); padding: 34px 32px;
-    margin-bottom: 22px; position: relative; overflow: hidden;
-  }
-  .hero .kick { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; color: var(--hero-soft); text-transform: uppercase; margin-bottom: 14px; }
-  .hero h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
-  .hero p.restraint { color: var(--hero-soft); font-size: 15px; max-width: 560px; }
-  .hero .badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .pill { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 5px 12px; border-radius: 999px; text-transform: uppercase; }
-  .pill.open { background: #1d7a4f; color: #fff; }
-  .pill.idle { background: #2a332e; color: var(--hero-soft); }
-  .pill.perp { background: #22354f; color: #9cc0f5; }
-  .pill.spot { background: #1e4d38; color: #8fe3b4; }
-  .hero .pair { font-family: var(--mono); font-size: 13px; color: var(--hero-soft); margin-bottom: 4px; }
-  .hero .dir-big { font-size: 44px; font-weight: 800; letter-spacing: -1px; margin: 6px 0; }
-  .hero .dir-big.long { color: #4ade80; }
-  .hero .dir-big.short { color: #f87171; }
-  .hero .conf { font-family: var(--mono); font-size: 14px; color: var(--hero-soft); margin-bottom: 18px; }
-  .hero .conf b { color: var(--hero-ink); font-size: 20px; }
-  .rail { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
-  .rail .cell { background: #1e2622; border-radius: 14px; padding: 12px 14px; }
-  .rail .k { font-size: 11px; color: var(--hero-soft); text-transform: uppercase; letter-spacing: 1px; font-family: var(--mono); }
-  .rail .v { font-family: var(--mono); font-size: 17px; font-weight: 600; margin-top: 4px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .chip { background: #232c27; color: #cfe0d4; font-size: 13px; padding: 7px 13px; border-radius: 999px; }
-  .hero .times { font-family: var(--mono); font-size: 12px; color: var(--hero-soft); margin-top: 16px; }
+/* Top bar */
+.topbar { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
+.topbar h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+.topbar .meta { font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace; font-size: 12px; color: var(--dim); font-variant-numeric: tabular-nums; }
+.live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--good); margin-right: 6px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-  /* Section titles */
-  h3.section { font-size: 17px; font-weight: 800; margin: 30px 0 14px; letter-spacing: -0.2px; }
+/* Signal stage (hero) */
+.signal-stage {
+  min-height: 370px;
+  padding: 22px;
+  background: var(--ink-stage);
+  color: var(--stage-text);
+  border-radius: 26px 26px 8px 8px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+  margin-bottom: 8px;
+}
+.signal-stage::after {
+  content: ""; position: absolute;
+  inset: auto -30% -70% 28%;
+  height: 260px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--stage-text) 9%, transparent);
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+.signal-stage.long { box-shadow: inset 0 4px 0 var(--good); }
+.signal-stage.short { box-shadow: inset 0 4px 0 var(--bad); }
+@media (min-width: 760px) {
+  .signal-stage { min-height: 410px; padding: 30px; border-radius: 34px 34px 10px 10px; }
+}
+.signal-stage .kicker {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-weight: 700; font-size: 10px; letter-spacing: 0.12em;
+  color: var(--dim); text-transform: uppercase; margin-bottom: 14px;
+}
+.signal-stage.idle h1 {
+  font-size: clamp(44px, 15vw, 74px);
+  line-height: 0.95; letter-spacing: -0.055em; font-weight: 750;
+  margin-bottom: 10px;
+}
+.signal-stage .restraint { color: var(--dim); font-size: 15px; max-width: 560px; }
+.signal-stage .badges { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
+.signal-stage .pair { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--dim); margin-bottom: 2px; position: relative; z-index: 1; font-variant-numeric: tabular-nums; }
+.signal-stage.active h1 {
+  font-size: clamp(46px, 15vw, 78px);
+  line-height: 0.9; letter-spacing: -0.045em; font-weight: 800;
+  margin: 4px 0 8px; position: relative; z-index: 1;
+}
+.signal-stage.active h1.long { color: var(--good); }
+.signal-stage.active h1.short { color: var(--bad); }
+.signal-stage .conf { font-family: "IBM Plex Mono", monospace; font-size: 14px; color: var(--dim); margin-bottom: 16px; position: relative; z-index: 1; font-variant-numeric: tabular-nums; }
+.signal-stage .conf b { color: var(--stage-text); font-size: 20px; }
+.price-rail {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: #2b342f; border-radius: 8px; overflow: hidden;
+  margin: 14px 0; position: relative; z-index: 1;
+}
+.price-rail .cell { background: #151b18; padding: 14px 12px; }
+.price-rail .k { font-size: 11px; color: #839087; margin-bottom: 4px; }
+.price-rail .v { font-family: "IBM Plex Mono", monospace; font-weight: 700; font-size: 14px; color: var(--stage-text); font-variant-numeric: tabular-nums; }
+.signal-stage .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; position: relative; z-index: 1; }
+.signal-stage .chip { background: color-mix(in srgb, var(--stage-text) 10%, transparent); color: var(--stage-text); font-size: 13px; padding: 7px 13px; border-radius: 999px; }
+.signal-stage .times { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--dim); margin-top: 14px; position: relative; z-index: 1; font-variant-numeric: tabular-nums; }
 
-  /* Venue panels */
-  .venues { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 640px) { .venues { grid-template-columns: 1fr; } }
-  .venue { background: var(--card); border-radius: 20px; padding: 22px; border: 1px solid var(--line); }
-  .venue .vhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .venue .vname { font-weight: 800; font-size: 15px; letter-spacing: 0.5px; }
-  .vstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .vstats .s .k { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.6px; }
-  .vstats .s .v { font-size: 22px; font-weight: 800; margin-top: 2px; font-family: var(--mono); }
-  .pos { color: var(--green); } .neg { color: var(--red); }
+/* Badges */
+.venue-badge {
+  display: inline-flex; align-items: center; min-height: 19px;
+  padding: 2px 6px; border-radius: 4px;
+  font-family: "IBM Plex Mono", monospace; font-weight: 800; font-size: 9px; letter-spacing: 0.08em;
+}
+.venue-badge.perp { color: var(--dim); background: color-mix(in srgb, var(--dim) 12%, transparent); }
+.venue-badge.spot { color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.signal-stage .venue-badge.perp { color: #d3dcd6; background: #303a34; }
+.signal-stage .venue-badge.spot { color: #74e4ac; background: #1b3d2c; }
+.outcome {
+  padding: 3px 7px; border-radius: 4px;
+  font-family: "IBM Plex Mono", monospace; font-weight: 800; font-size: 10px; letter-spacing: 0.04em;
+}
+.outcome.win { background: var(--good-soft); color: var(--good); }
+.outcome.loss { background: var(--bad-soft); color: var(--bad); }
+.outcome.open { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+.outcome.neutral { background: var(--surface); color: var(--dim); }
+.live-badge {
+  color: #0b1510; background: var(--good);
+  border-radius: 4px; padding: 3px 7px;
+  font-family: "IBM Plex Mono", monospace; font-weight: 900; font-size: 10px; letter-spacing: 0.06em;
+}
 
-  /* Filters */
-  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-  .fbtn { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 999px;
-          border: 1px solid var(--line); background: var(--card); color: var(--ink-soft); cursor: pointer; }
-  .fbtn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .fgroup { display: flex; gap: 8px; align-items: center; margin-right: 12px; }
-  .fgroup .flabel { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--mono); }
+/* Sections */
+.section-block { margin-top: 34px; }
+.section-heading { margin-bottom: 14px; }
+.section-heading h2 { font-size: 25px; line-height: 1.15; letter-spacing: -0.035em; font-weight: 800; }
+.kicker {
+  font-family: "IBM Plex Mono", monospace; font-weight: 700; font-size: 10px;
+  letter-spacing: 0.12em; color: var(--dim); text-transform: uppercase;
+}
 
-  /* Ledger */
-  .ledger { display: flex; flex-direction: column; gap: 10px; }
-  details.sig { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-  details.sig summary { list-style: none; cursor: pointer; padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
-  details.sig summary::-webkit-details-marker { display: none; }
-  details.sig summary:hover { background: var(--surface); }
-  .dirmark { font-size: 20px; font-weight: 800; width: 28px; text-align: center; }
-  .dirmark.long { color: var(--green); } .dirmark.short { color: var(--red); }
-  .sigmain { flex: 1; min-width: 0; }
-  .sigmain .l1 { font-weight: 700; font-size: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .sigmain .l2 { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
-  .obadge { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; letter-spacing: 0.5px; }
-  .obadge.WIN, .obadge.EXPIRED_WIN { background: var(--green-bg); color: var(--green); }
-  .obadge.LOSS, .obadge.EXPIRED_LOSS { background: var(--red-bg); color: var(--red); }
-  .obadge.OPEN { background: var(--amber-bg); color: var(--amber); }
-  .vbadge { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
-  .vbadge.perp { background: var(--blue-bg); color: var(--blue); }
-  .vbadge.spot { background: var(--green-bg); color: var(--green); }
-  .sigpnl { font-family: var(--mono); font-weight: 700; font-size: 15px; }
-  .sigbody { padding: 0 18px 18px 58px; border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 14px; }
-  .kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 12px; }
-  .kv .k { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.6px; font-family: var(--mono); }
-  .kv .v { font-family: var(--mono); font-size: 14px; font-weight: 600; margin-top: 2px; }
-  .reasons { margin-top: 8px; }
-  .reasons li { font-size: 13.5px; color: var(--ink-soft); margin: 4px 0 4px 18px; }
-  .timeline { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 10px; }
+/* Venue performance */
+.venue-performance {
+  margin: 8px 0 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px 8px 20px 20px;
+  overflow: hidden;
+}
+.venue-performance .vp-head { padding: 13px 16px; border-bottom: 1px solid var(--border); }
+.venue-performance .vp-head h2 { font-size: 14px; letter-spacing: -0.015em; font-weight: 800; }
+.venue-panel + .venue-panel { border-top: 1px solid var(--border); }
+@media (min-width: 760px) {
+  .venue-panels { display: grid; grid-template-columns: 1fr 1fr; }
+  .venue-panel + .venue-panel { border-top: none; border-left: 1px solid var(--border); }
+}
+.venue-panel .vsub { padding: 12px 16px 0; font-size: 10px; color: var(--dim); font-family: "IBM Plex Mono", monospace; letter-spacing: 0.08em; font-weight: 700; }
+.venue-stats { display: grid; grid-template-columns: repeat(3, 1fr); }
+.stat-cell { padding: 14px 16px 16px; min-height: 77px; border-bottom: 1px solid var(--border); }
+.stat-cell:nth-child(odd) { border-right: 1px solid var(--border); }
+.stat-cell:last-child { border-right: none; }
+.stat-cell .k { font-size: 11px; color: var(--dim); margin-bottom: 8px; }
+.stat-cell .v { font-family: "IBM Plex Mono", monospace; font-size: 19px; letter-spacing: -0.03em; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat-cell .v.pos { color: var(--good); }
+.stat-cell .v.neg { color: var(--bad); }
 
-  /* Jobs */
-  .jobs { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
-  .jobs .jrow { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
-  .jobs .jrow:last-child { border-bottom: none; }
-  .jobs .jname { font-weight: 600; }
-  .jobs .jmeta { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+/* Ledger */
+.history-list { border-top: 1px solid var(--border); }
+.history-row { border-bottom: 1px solid var(--border); }
+.history-row summary {
+  list-style: none; cursor: pointer;
+  min-height: 80px; padding: 12px 2px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.history-row summary::-webkit-details-marker { display: none; }
+.history-row summary:hover { background: var(--surface); }
+.dir-mark {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid currentColor;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 800; flex-shrink: 0;
+}
+.dir-mark.long { color: var(--good); }
+.dir-mark.short { color: var(--bad); }
+.row-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; }
+.row-title { font-size: 16px; font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row-meta { font-family: "IBM Plex Mono", monospace; font-size: 10px; color: var(--dim); margin-top: 3px; font-variant-numeric: tabular-nums; }
+.row-result { display: flex; align-items: center; gap: 10px; }
+.row-pnl { font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.row-pnl.pos { color: var(--good); } .row-pnl.neg { color: var(--bad); }
+.row-detail { padding: 0 2px 18px 47px; }
+.detail-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; font-size: 11px; margin-bottom: 10px; }
+@media (min-width: 760px) { .detail-prices { grid-template-columns: repeat(4, 1fr); } }
+.detail-prices .k { color: var(--dim); font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.06em; }
+.detail-prices .v { font-family: "IBM Plex Mono", monospace; font-weight: 650; font-size: 13px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.reason-list { font-size: 12px; line-height: 1.55; color: var(--text); margin: 6px 0 6px 16px; }
+.row-timeline {
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; color: var(--dim);
+  margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
 
-  footer { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-faint); }
-  .empty { text-align: center; padding: 30px; color: var(--ink-faint); font-size: 14px; }
+/* Filters */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.fbtn {
+  min-height: 36px; padding: 0 13px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface-strong); color: var(--text);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  font-family: Manrope, "Avenir Next", "Segoe UI", sans-serif;
+}
+.fbtn.active { background: var(--text); border-color: var(--text); color: var(--surface-strong); }
+.fgroup { display: flex; gap: 8px; align-items: center; margin-right: 10px; }
+.fgroup .flabel { font-family: "IBM Plex Mono", monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: var(--dim); }
+
+/* Pipeline / jobs */
+.pipeline-row {
+  display: grid; grid-template-columns: 64px 1fr; gap: 16px;
+  padding: 20px 0; border-top: 1px solid var(--border);
+}
+.pipeline-row .sched {
+  font-family: "IBM Plex Mono", monospace; font-size: 24px; color: var(--accent);
+  font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.pipeline-row .jname { font-weight: 700; font-size: 15px; }
+.pipeline-row .jmeta { font-size: 13px; color: var(--dim); margin-top: 2px; }
+
+footer {
+  margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--dim);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.empty { text-align: center; padding: 30px; color: var(--dim); font-size: 14px; }
 </style>
 </head>
 <body>
-<div class="wrap">
+<main>
   <div class="topbar">
     <h1>Signal Dashboard</h1>
     <div class="meta"><span class="live-dot"></span>LIVE · <span id="updated">loading…</span></div>
   </div>
 
-  <div class="hero" id="hero"></div>
+  <div class="signal-stage idle" id="hero"></div>
 
-  <h3 class="section">Verified performance</h3>
-  <div class="venues" id="venues"></div>
-
-  <h3 class="section">Signal history</h3>
-  <div class="filters">
-    <div class="fgroup"><span class="flabel">Outcome</span>
-      <button class="fbtn active" data-f="outcome" data-v="all">All</button>
-      <button class="fbtn" data-f="outcome" data-v="win">Wins</button>
-      <button class="fbtn" data-f="outcome" data-v="loss">Losses</button>
-      <button class="fbtn" data-f="outcome" data-v="open">Open</button>
-    </div>
-    <div class="fgroup"><span class="flabel">Venue</span>
-      <button class="fbtn active" data-f="venue" data-v="all">All</button>
-      <button class="fbtn" data-f="venue" data-v="perp">Perp</button>
-      <button class="fbtn" data-f="venue" data-v="spot">Spot</button>
+  <div class="section-block">
+    <div class="section-heading"><span class="kicker">Verified performance</span></div>
+    <div class="venue-performance">
+      <div class="vp-head"><h2>Track record</h2></div>
+      <div class="venue-panels" id="venues"></div>
     </div>
   </div>
-  <div class="ledger" id="ledger"></div>
 
-  <h3 class="section">What the scheduled jobs do</h3>
-  <div class="jobs" id="jobs"></div>
+  <div class="section-block">
+    <div class="section-heading"><span class="kicker">The ledger</span><h2>Signal history</h2></div>
+    <div class="filters">
+      <div class="fgroup"><span class="flabel">Outcome</span>
+        <button class="fbtn active" data-f="outcome" data-v="all">All</button>
+        <button class="fbtn" data-f="outcome" data-v="win">Wins</button>
+        <button class="fbtn" data-f="outcome" data-v="loss">Losses</button>
+        <button class="fbtn" data-f="outcome" data-v="open">Open</button>
+      </div>
+      <div class="fgroup"><span class="flabel">Venue</span>
+        <button class="fbtn active" data-f="venue" data-v="all">All</button>
+        <button class="fbtn" data-f="venue" data-v="perp">Perp</button>
+        <button class="fbtn" data-f="venue" data-v="spot">Spot</button>
+      </div>
+    </div>
+    <div class="history-list" id="ledger"></div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading"><span class="kicker">Under the hood</span><h2>What the scheduled jobs do</h2></div>
+    <div id="jobs"></div>
+  </div>
 
   <footer>
-    Paper-trading research system — no real money. Signals are generated by an automated
-    trend-following engine for research and review, not financial advice.
-    Data refreshes automatically as signals fire and resolve.
+    <span>Paper-trading research system — no real money. Signals are generated by an automated trend-following engine for research and review, not financial advice.</span>
+    <span>Data refreshes automatically as signals fire and resolve.</span>
   </footer>
-</div>
+</main>
 
 <script>
 const PKT = 'Asia/Karachi';
@@ -189,44 +321,47 @@ function renderHero() {
   const el = document.getElementById('hero');
   const open = (DATA.recent || []).find(s => !s.outcome || s.outcome === 'OPEN');
   if (!open) {
+    el.className = 'signal-stage idle';
     el.innerHTML = `
-      <div class="kick">Signal stage</div>
-      <div class="badges"><span class="pill idle">No trade</span></div>
-      <h2>Standing by.</h2>
-      <p class="restraint">The engine is scanning the market. It only fires when the setup clears a high bar — most hours, correctly, nothing happens. Restraint is the strategy working.</p>`;
+      <div><div class="kicker" style="color:var(--dim)">Signal stage</div>
+      <h1>Standing by.</h1>
+      <p class="restraint">The engine is scanning the market. It only fires when the setup clears a high bar — most hours, correctly, nothing happens. Restraint is the strategy working.</p></div>
+      <div></div>`;
     return;
   }
   const dirCls = open.direction === 'LONG' ? 'long' : 'short';
   const arrow = open.direction === 'LONG' ? '▲' : '▼';
+  el.className = 'signal-stage ' + dirCls;
   el.innerHTML = `
-    <div class="kick">Signal stage</div>
-    <div class="badges">
-      <span class="pill open">Open</span>
-      <span class="pill ${open.venue}">${open.venue}</span>
-      ${open.regime ? `<span class="pill idle">${open.regime}</span>` : ''}
-    </div>
-    <div class="pair">${open.coin}/USDT · ${open.direction} ${arrow}</div>
-    <div class="dir-big ${dirCls}">${open.direction}</div>
-    <div class="conf">confidence <b>${open.confidence ?? '—'}%</b> · score ${open.score ?? '—'}</div>
-    <div class="rail">
-      <div class="cell"><div class="k">Entry</div><div class="v">${fmtP(open.entry, 5)}</div></div>
-      <div class="cell"><div class="k">Stop</div><div class="v">${fmtP(open.stop, 5)}</div></div>
-      <div class="cell"><div class="k">Target</div><div class="v">${fmtP(open.take_profit, 5)}</div></div>
-    </div>
-    ${open.reasons && open.reasons.length ? `<div class="chips">${open.reasons.map(r => `<span class="chip">${r}</span>`).join('')}</div>` : ''}
-    <div class="times">opened ${fmtT(open.signal_ts)} PKT</div>`;
+    <div>
+      <div class="kicker" style="color:var(--dim)">Signal stage</div>
+      <div class="badges" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;position:relative;z-index:1">
+        <span class="live-badge">OPEN</span>
+        <span class="venue-badge ${open.venue}">${open.venue.toUpperCase()}</span>
+      </div>
+      <div class="pair">${open.coin}/USDT · ${open.direction} ${arrow}</div>
+      <h1 class="${dirCls}">${open.direction}</h1>
+      <div class="conf">confidence <b>${open.confidence ?? '—'}%</b> · score ${open.score ?? '—'}</div>
+      <div class="price-rail">
+        <div class="cell"><div class="k">Entry</div><div class="v">${fmtP(open.entry, 5)}</div></div>
+        <div class="cell"><div class="k">Stop</div><div class="v">${fmtP(open.stop, 5)}</div></div>
+        <div class="cell"><div class="k">Target</div><div class="v">${fmtP(open.take_profit, 5)}</div></div>
+      </div>
+      ${open.reasons && open.reasons.length ? `<div class="chips">${open.reasons.map(r => `<span class="chip">${r}</span>`).join('')}</div>` : ''}
+      <div class="times">opened ${fmtT(open.signal_ts)} PKT</div>
+    </div><div></div>`;
 }
 
 function venuePanel(v, name, cls) {
   const wr = v.win_rate, pf = v.profit_factor, tr = v.total_return_pct;
-  return `<div class="venue">
-    <div class="vhead"><span class="vname">${name}</span><span class="vbadge ${cls}">${cls.toUpperCase()}</span></div>
-    <div class="vstats">
-      <div class="s"><div class="k">Win rate</div><div class="v ${wr >= 50 ? 'pos' : 'neg'}">${wr}%</div></div>
-      <div class="s"><div class="k">Net P&amp;L</div><div class="v ${tr >= 0 ? 'pos' : 'neg'}">${tr >= 0 ? '+' : ''}${tr}%</div></div>
-      <div class="s"><div class="k">Profit factor</div><div class="v ${pf >= 1 ? 'pos' : 'neg'}">${pf}</div></div>
+  return `<div class="venue-panel">
+    <div class="vsub">${name}</div>
+    <div class="venue-stats">
+      <div class="stat-cell"><div class="k">Win rate</div><div class="v ${wr >= 50 ? 'pos' : 'neg'}">${wr}%</div></div>
+      <div class="stat-cell"><div class="k">Net P&amp;L</div><div class="v ${tr >= 0 ? 'pos' : 'neg'}">${tr >= 0 ? '+' : ''}${tr}%</div></div>
+      <div class="stat-cell"><div class="k">Profit factor</div><div class="v ${pf >= 1 ? 'pos' : 'neg'}">${pf}</div></div>
     </div>
-    <div style="margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink-faint)">${v.signals} resolved · ${v.wins} wins</div>
+    <div class="mono" style="padding:0 16px 14px;font-size:11px;color:var(--dim)">${v.signals} resolved · ${v.wins} wins</div>
   </div>`;
 }
 
@@ -234,35 +369,35 @@ function sigRow(s) {
   const arrow = s.direction === 'LONG' ? '▲' : '▼';
   const dirCls = s.direction === 'LONG' ? 'long' : 'short';
   const oc = s.outcome || 'OPEN';
+  const ocCls = isWin(oc) ? 'win' : (isLoss(oc) ? 'loss' : (oc === 'OPEN' ? 'open' : 'neutral'));
   const pnl = s.pnl_pct == null ? '' :
-    `<span class="sigpnl ${s.pnl_pct >= 0 ? 'pos' : 'neg'}">${s.pnl_pct >= 0 ? '+' : ''}${s.pnl_pct}%</span>`;
+    `<span class="row-pnl ${s.pnl_pct >= 0 ? 'pos' : 'neg'}">${s.pnl_pct >= 0 ? '+' : ''}${s.pnl_pct}%</span>`;
   const reasons = (s.reasons && s.reasons.length)
-    ? `<div class="reasons"><ul>${s.reasons.map(r => `<li>${r}</li>`).join('')}</ul></div>` : '';
-  return `<details class="sig">
+    ? `<ul class="reason-list">${s.reasons.map(r => `<li>${r}</li>`).join('')}</ul>` : '';
+  return `<div class="history-row"><details>
     <summary>
-      <span class="dirmark ${dirCls}">${arrow}</span>
-      <span class="sigmain">
-        <span class="l1">${s.coin}/USDT ${s.direction}
-          <span class="vbadge ${s.venue}">${s.venue.toUpperCase()}</span>
-          <span class="obadge ${oc}">${oc.replace('_', ' ')}</span>
+      <span class="row-main">
+        <span class="dir-mark ${dirCls}">${arrow}</span>
+        <span>
+          <span class="row-title">${s.coin}/USDT ${s.direction}
+            <span class="venue-badge ${s.venue}">${s.venue.toUpperCase()}</span>
+          </span>
+          <span class="row-meta">${fmtT(s.signal_ts)} PKT · score ${s.score ?? '—'}</span>
         </span>
-        <span class="l2">${fmtT(s.signal_ts)} PKT · score ${s.score ?? '—'}</span>
       </span>
-      ${pnl}
+      <span class="row-result"><span class="outcome ${ocCls}">${oc.replace('_', ' ')}</span>${pnl}</span>
     </summary>
-    <div class="sigbody">
-      <div class="kv">
-        <div><div class="k">Entry</div><div class="v">${fmtP(s.entry, 5)}</div></div>
-        <div><div class="k">Stop</div><div class="v">${fmtP(s.stop, 5)}</div></div>
-        <div><div class="k">Target</div><div class="v">${fmtP(s.take_profit, 5)}</div></div>
-        <div><div class="k">Exit</div><div class="v">${fmtP(s.exit_price, 5)}</div></div>
-        <div><div class="k">Regime</div><div class="v">${s.regime || '—'}</div></div>
-        <div><div class="k">Horizon</div><div class="v">${s.horizon_h ? s.horizon_h + 'h' : '—'}</div></div>
+    <div class="row-detail">
+      <div class="detail-prices">
+        <div><div class="k">ENTRY</div><div class="v">${fmtP(s.entry, 5)}</div></div>
+        <div><div class="k">STOP</div><div class="v">${fmtP(s.stop, 5)}</div></div>
+        <div><div class="k">TARGET</div><div class="v">${fmtP(s.take_profit, 5)}</div></div>
+        <div><div class="k">EXIT</div><div class="v">${fmtP(s.exit_price, 5)}</div></div>
       </div>
       ${reasons}
-      <div class="timeline">opened ${fmtT(s.signal_ts)} PKT${s.exit_ts ? ' · resolved ' + fmtT(s.exit_ts) + ' PKT' : ''}${s.verified_at ? ' · verified ' + fmtT(s.verified_at) + ' PKT' : ''}</div>
+      <div class="row-timeline">opened ${fmtT(s.signal_ts)} PKT${s.exit_ts ? ' · resolved ' + fmtT(s.exit_ts) + ' PKT' : ''}${s.verified_at ? ' · verified ' + fmtT(s.verified_at) + ' PKT' : ''}${s.regime ? ' · ' + s.regime : ''}${s.horizon_h ? ' · ' + s.horizon_h + 'h' : ''}</div>
     </div>
-  </details>`;
+  </details></div>`;
 }
 
 function renderLedger() {
@@ -278,23 +413,22 @@ function renderLedger() {
 
 function renderJobs() {
   const jobs = [
-    ['Signal generator', 'every hour · scans 26 coins'],
-    ['Signal verifier', 'every 30 min · resolves outcomes'],
-    ['Spot signal generator', 'every hour · spot venue'],
-    ['Spot verifier', 'every 30 min · spot outcomes'],
-    ['OI poller', 'every 15 min · open-interest intel'],
+    ['~1h', 'Signal generator', 'Scans 26 coins, scores setups, fires LONG signals'],
+    ['~30m', 'Signal verifier', 'Resolves OPEN signals against live candles'],
+    ['~1h', 'Spot signal generator', 'Same engine on spot venue'],
+    ['~30m', 'Spot verifier', 'Resolves spot outcomes'],
+    ['~15m', 'OI poller', 'Open-interest snapshots for flush intel'],
   ];
-  document.getElementById('jobs').innerHTML = jobs.map(([n, m]) =>
-    `<div class="jrow"><span class="jname">${n}</span><span class="jmeta">${m}</span></div>`).join('');
+  document.getElementById('jobs').innerHTML = jobs.map(([s, n, m]) =>
+    `<div class="pipeline-row"><span class="sched mono">${s}</span><span><span class="jname">${n}</span><div class="jmeta">${m}</div></span></div>`).join('');
 }
 
 function render(d) {
   DATA = d;
-  document.getElementById('updated').textContent =
-    'updated ' + fmtT(d.updated_at) + ' PKT';
+  document.getElementById('updated').textContent = 'updated ' + fmtT(d.updated_at) + ' PKT';
   renderHero();
   document.getElementById('venues').innerHTML =
-    venuePanel(d.perp, 'Perpetual Futures', 'perp') + venuePanel(d.spot, 'Spot', 'spot');
+    venuePanel(d.perp, 'PERPETUAL FUTURES', 'perp') + venuePanel(d.spot, 'SPOT', 'spot');
   renderLedger();
   renderJobs();
 }
