@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-14T17:00:55.666647+00:00",
+  "updated_at": "2026-10-14T17:14:00.024718+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
@@ -14,12 +14,12 @@
     "avg_per_signal": 3.9
   },
   "spot": {
-    "signals": 2,
-    "wins": 1,
-    "win_rate": 50.0,
-    "profit_factor": 4.49,
-    "total_return_pct": 6.99,
-    "avg_per_signal": 3.5
+    "signals": 3,
+    "wins": 2,
+    "win_rate": 66.7,
+    "profit_factor": 9.81,
+    "total_return_pct": 17.67,
+    "avg_per_signal": 5.89
   },
   "recent": [
     {
@@ -27,14 +27,14 @@
       "venue": "spot",
       "direction": "LONG",
       "signal_ts": "2026-10-14T13:00:00+00:00",
-      "outcome": null,
-      "pnl_pct": null,
+      "outcome": "WIN",
+      "pnl_pct": 10.67,
       "score": 64.0,
       "entry": 0.0512,
       "stop": 0.0484161153318053,
       "take_profit": 0.0567677693363894,
-      "exit_price": null,
-      "exit_ts": null,
+      "exit_price": 0.0567677693363894,
+      "exit_ts": "2026-10-14T16:00:00+00:00",
       "reasons": [
         "LONG \u25b2 score +64 (TREND)",
         "trend up (+35)",
@@ -44,7 +44,7 @@
       "regime": "TREND",
       "confidence": 0.4,
       "horizon_h": 8,
-      "verified_at": null
+      "verified_at": "2026-10-14 17:12:56"
     },
     {
       "coin": "STRK",
