@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-16T14:13:07.759486+00:00",
+  "updated_at": "2026-10-16T14:20:53.246797+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
@@ -39,6 +39,29 @@
         "LONG \u25b2 score +64 (TREND)",
         "trend up (+35)",
         "RSI 86 (+24)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.4,
+      "horizon_h": 8,
+      "verified_at": null
+    },
+    {
+      "coin": "TIA",
+      "venue": "perp",
+      "direction": "LONG",
+      "signal_ts": "2026-10-16T14:00:00+00:00",
+      "outcome": null,
+      "pnl_pct": null,
+      "score": 63.0,
+      "entry": 0.7107,
+      "stop": 0.6872722240940764,
+      "take_profit": 0.7575555518118473,
+      "exit_price": null,
+      "exit_ts": null,
+      "reasons": [
+        "LONG \u25b2 score +63 (TREND)",
+        "trend up (+35)",
+        "RSI 86 (+25)"
       ],
       "regime": "TREND",
       "confidence": 0.4,
@@ -232,29 +255,6 @@
       "confidence": 0.5,
       "horizon_h": 8,
       "verified_at": "2026-10-10 11:35:25"
-    },
-    {
-      "coin": "MAGIC",
-      "venue": "perp",
-      "direction": "LONG",
-      "signal_ts": "2026-10-09T20:00:00+00:00",
-      "outcome": "WIN",
-      "pnl_pct": 9.92,
-      "score": 64.0,
-      "entry": 0.11681,
-      "stop": 0.11096057869851202,
-      "take_profit": 0.12850884260297596,
-      "exit_price": 0.12850884260297596,
-      "exit_ts": "2026-10-10T01:00:00+00:00",
-      "reasons": [
-        "LONG \u25b2 score +64 (TREND)",
-        "trend up (+35)",
-        "RSI 90 (+25)"
-      ],
-      "regime": "TREND",
-      "confidence": 0.4,
-      "horizon_h": 8,
-      "verified_at": "2026-10-10 04:22:10"
     }
   ]
 }
