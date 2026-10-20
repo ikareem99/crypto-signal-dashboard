@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-10-20T22:20:29.096279+00:00",
+  "updated_at": "2026-10-20T22:22:26.967596+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
     "note": "2-year walk-forward, paper trading"
   },
   "perp": {
-    "signals": 9,
+    "signals": 10,
     "wins": 5,
-    "win_rate": 55.6,
-    "profit_factor": 3.25,
-    "total_return_pct": 27.84,
-    "avg_per_signal": 3.09
+    "win_rate": 50.0,
+    "profit_factor": 2.82,
+    "total_return_pct": 25.93,
+    "avg_per_signal": 2.59
   },
   "spot": {
     "signals": 5,
@@ -27,14 +27,14 @@
       "venue": "perp",
       "direction": "LONG",
       "signal_ts": "2026-10-20T18:00:00+00:00",
-      "outcome": null,
-      "pnl_pct": null,
+      "outcome": "LOSS",
+      "pnl_pct": -1.91,
       "score": 61.0,
       "entry": 4.616e-06,
       "stop": 4.532481077727216e-06,
       "take_profit": 4.78303784454557e-06,
-      "exit_price": null,
-      "exit_ts": null,
+      "exit_price": 4.532481077727216e-06,
+      "exit_ts": "2026-10-20T21:00:00+00:00",
       "reasons": [
         "LONG \u25b2 score +61 (TREND)",
         "trend up (+35)",
@@ -43,7 +43,7 @@
       "regime": "TREND",
       "confidence": 0.3,
       "horizon_h": 8,
-      "verified_at": null
+      "verified_at": "2026-10-20 22:22:17"
     },
     {
       "coin": "WLD",
