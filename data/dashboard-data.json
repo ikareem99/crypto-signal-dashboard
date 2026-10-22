@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T13:52:26.808356+00:00",
+  "updated_at": "2026-10-22T14:12:49.075960+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
@@ -22,6 +22,30 @@
     "avg_per_signal": 3.62
   },
   "recent": [
+    {
+      "coin": "AI",
+      "venue": "spot",
+      "direction": "LONG",
+      "signal_ts": "2026-10-22T14:00:00+00:00",
+      "outcome": null,
+      "pnl_pct": null,
+      "score": 62.0,
+      "entry": 0.0204,
+      "stop": 0.01996915217144824,
+      "take_profit": 0.02126169565710352,
+      "exit_price": null,
+      "exit_ts": null,
+      "reasons": [
+        "LONG \u25b2 score +62 (TREND)",
+        "trend up (+35)",
+        "RSI 64 (+17)",
+        "basis -1500bp (+10)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": null
+    },
     {
       "coin": "PEPE",
       "venue": "perp",
@@ -230,29 +254,6 @@
       "confidence": 0.3,
       "horizon_h": 8,
       "verified_at": "2026-10-10 18:22:24"
-    },
-    {
-      "coin": "NEAR",
-      "venue": "spot",
-      "direction": "LONG",
-      "signal_ts": "2026-10-10T14:00:00+00:00",
-      "outcome": "LOSS",
-      "pnl_pct": -2.01,
-      "score": 60.0,
-      "entry": 5.423,
-      "stop": 5.325108648849165,
-      "take_profit": 5.618782702301671,
-      "exit_price": 5.325108648849165,
-      "exit_ts": "2026-10-10T17:00:00+00:00",
-      "reasons": [
-        "LONG \u25b2 score +60 (TREND)",
-        "trend up (+35)",
-        "RSI 75 (+20)"
-      ],
-      "regime": "TREND",
-      "confidence": 0.3,
-      "horizon_h": 8,
-      "verified_at": "2026-10-10 18:11:42"
     }
   ]
 }
