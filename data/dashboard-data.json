@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-29T14:52:20.686472+00:00",
+  "updated_at": "2026-10-29T15:11:56.406014+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
