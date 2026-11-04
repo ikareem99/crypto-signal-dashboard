@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-11-04T20:20:42.143563+00:00",
+  "updated_at": "2026-11-04T20:22:30.022706+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
     "note": "2-year walk-forward, paper trading"
   },
   "perp": {
-    "signals": 12,
+    "signals": 13,
     "wins": 5,
-    "win_rate": 41.7,
-    "profit_factor": 2.2,
-    "total_return_pct": 21.94,
-    "avg_per_signal": 1.83
+    "win_rate": 38.5,
+    "profit_factor": 2.08,
+    "total_return_pct": 20.87,
+    "avg_per_signal": 1.61
   },
   "spot": {
     "signals": 12,
@@ -74,14 +74,14 @@
       "venue": "perp",
       "direction": "LONG",
       "signal_ts": "2026-11-04T18:00:00+00:00",
-      "outcome": null,
-      "pnl_pct": null,
+      "outcome": "LOSS",
+      "pnl_pct": -1.07,
       "score": 61.0,
       "entry": 2434.25,
       "stop": 2410.7256738175683,
       "take_profit": 2481.298652364863,
-      "exit_price": null,
-      "exit_ts": null,
+      "exit_price": 2410.7256738175683,
+      "exit_ts": "2026-11-04T19:00:00+00:00",
       "reasons": [
         "LONG \u25b2 score +61 (TREND)",
         "trend up (+35)",
@@ -90,7 +90,7 @@
       "regime": "TREND",
       "confidence": 0.3,
       "horizon_h": 8,
-      "verified_at": null
+      "verified_at": "2026-11-04 20:22:24"
     },
     {
       "coin": "TRUMP",
