@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T18:11:47.603111+00:00",
+  "updated_at": "2026-11-04T18:12:55.537905+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
@@ -42,6 +42,30 @@
       ],
       "regime": "TREND",
       "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": null
+    },
+    {
+      "coin": "QNT",
+      "venue": "spot",
+      "direction": "LONG",
+      "signal_ts": "2026-11-04T18:00:00+00:00",
+      "outcome": null,
+      "pnl_pct": null,
+      "score": 63.0,
+      "entry": 207.88,
+      "stop": 203.95013397643314,
+      "take_profit": 215.73973204713374,
+      "exit_price": null,
+      "exit_ts": null,
+      "reasons": [
+        "LONG \u25b2 score +63 (TREND)",
+        "trend up (+35)",
+        "RSI 68 (+18)",
+        "basis -8438bp (+10)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.4,
       "horizon_h": 8,
       "verified_at": null
     },
@@ -233,29 +257,6 @@
       "confidence": 0.3,
       "horizon_h": 8,
       "verified_at": "2026-10-20 22:22:17"
-    },
-    {
-      "coin": "WLD",
-      "venue": "spot",
-      "direction": "LONG",
-      "signal_ts": "2026-10-20T13:00:00+00:00",
-      "outcome": "WIN",
-      "pnl_pct": 3.8,
-      "score": 60.0,
-      "entry": 0.5563,
-      "stop": 0.5451736645862135,
-      "take_profit": 0.5785526708275731,
-      "exit_price": 0.5785526708275731,
-      "exit_ts": "2026-10-20T14:00:00+00:00",
-      "reasons": [
-        "LONG \u25b2 score +60 (TREND)",
-        "trend up (+35)",
-        "RSI 74 (+21)"
-      ],
-      "regime": "TREND",
-      "confidence": 0.3,
-      "horizon_h": 8,
-      "verified_at": "2026-10-20 15:11:45"
     }
   ]
 }
