@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-10T22:12:54.221021+00:00",
+  "updated_at": "2026-11-10T22:20:22.316774+00:00",
   "engine": "v1 trend-long, 1h, long-only, 26-coin universe",
   "backtest": {
     "profit_factor_2y": 1.21,
@@ -40,6 +40,30 @@
         "trend up (+35)",
         "RSI 62 (+16)",
         "basis -59bp (+10)"
+      ],
+      "regime": "TREND",
+      "confidence": 0.3,
+      "horizon_h": 8,
+      "verified_at": null
+    },
+    {
+      "coin": "ONE",
+      "venue": "perp",
+      "direction": "LONG",
+      "signal_ts": "2026-11-10T22:00:00+00:00",
+      "outcome": null,
+      "pnl_pct": null,
+      "score": 61.0,
+      "entry": 0.0018635,
+      "stop": 0.0017679696636137235,
+      "take_profit": 0.0020545606727725525,
+      "exit_price": null,
+      "exit_ts": null,
+      "reasons": [
+        "LONG \u25b2 score +61 (TREND)",
+        "trend up (+35)",
+        "RSI 63 (+16)",
+        "basis -40bp (+10)"
       ],
       "regime": "TREND",
       "confidence": 0.3,
@@ -235,30 +259,6 @@
       "confidence": 0.4,
       "horizon_h": 8,
       "verified_at": "2026-11-01 08:11:42"
-    },
-    {
-      "coin": "ZRO",
-      "venue": "spot",
-      "direction": "LONG",
-      "signal_ts": "2026-10-31T21:00:00+00:00",
-      "outcome": "WIN",
-      "pnl_pct": 3.8,
-      "score": 60.0,
-      "entry": 1.818,
-      "stop": 1.7816713989741946,
-      "take_profit": 1.8906572020516108,
-      "exit_price": 1.8906572020516108,
-      "exit_ts": "2026-11-01T03:00:00+00:00",
-      "reasons": [
-        "LONG \u25b2 score +60 (TREND)",
-        "trend up (+35)",
-        "RSI 67 (+15)",
-        "basis -36bp (+10)"
-      ],
-      "regime": "TREND",
-      "confidence": 0.3,
-      "horizon_h": 8,
-      "verified_at": "2026-11-01 04:11:44"
     }
   ]
 }
